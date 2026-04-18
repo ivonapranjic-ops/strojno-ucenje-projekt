@@ -4,4 +4,4 @@ torchvision
 opencv-python-headless
 Pillow
 numpy
-model: https://drive.google.com/file/d/1o4j3Qml3cH1cMi_pLMrkZSpZyFY6oO1r/view?usp=drive_link
+gdown
