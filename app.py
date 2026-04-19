@@ -63,7 +63,7 @@ def load_my_model():
     output = 'pneumonia_vgg16.pth'
     
     if not os.path.exists(output):
-        gdown.download(url, output, quiet=False)
+        gdown.download(url, output, quiet=False, fuzzy=True)
     model = models.vgg16(weights=None)
     
     
