@@ -1,6 +1,6 @@
 import streamlit as st
 import os
-import gdown
+import requests
 import pandas as pd
 import numpy as np
 import torch
@@ -58,16 +58,26 @@ def generate_gradcam(model, input_batch, target_layer):
 #ucitavanje modela
 @st.cache_resource
 def load_my_model():
-    #file_id = '1o4j3QmI3cH1cMi_plMrk7Sp7yFY6oOIr'
-    url = f'https://drive.google.com/uc?export=download&id={FILE_ID}'
-    #url = f'https://drive.google.com/uc?id={file_id}'
+    url = 'https://huggingface.co/ivonapranjic/pneumonia-vgg16-model/resolve/main/pneumonia_vgg16.pth'
     output = 'pneumonia_vgg16.pth'
     
+    
     if not os.path.exists(output):
-        gdown.download(url, output, quiet=False)
+        with st.spinner('Preuzimanje modela s Hugging Face-a... Molimo pričekajte.'):
+            try:
+                response = requests.get(url, stream=True)
+                response.raise_for_status() # Provjerava je li link ispravan
+                with open(output, "wb") as f:
+                    for chunk in response.iter_content(chunk_size=8192):
+                        f.write(chunk)
+            except Exception as e:
+                st.error(f"Greška pri preuzimanju modela: {e}")
+                return None
+
+    
     model = models.vgg16(weights=None)
     
-    
+    # Prilagodba klasifikatora 
     n_inputs = model.classifier[6].in_features
     model.classifier[6] = nn.Sequential(
         nn.Linear(n_inputs, 256),
@@ -76,9 +86,12 @@ def load_my_model():
         nn.Linear(256, 2)
     )
     
-    model.load_state_dict(torch.load('pneumonia_vgg16.pth', map_location='cpu'))
+    
+    model.load_state_dict(torch.load(output, map_location=torch.device('cpu')))
     model.eval()
+    
     return model
+
 
 #glavni dio sučelja:
 uploaded_file=st.file_uploader("Upload an X-ray image (JPG/PNG)", type=["jpg", "png", "jpeg"])
