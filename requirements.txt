@@ -4,5 +4,5 @@ torchvision
 opencv-python-headless
 Pillow
 numpy
-gdown
+requests
 matplotlib
