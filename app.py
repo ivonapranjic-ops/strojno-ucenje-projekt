@@ -9,7 +9,7 @@ from torchvision import models, transforms
 from PIL import Image
 import cv2
 import matplotlib.pyplot as plt
-
+FILE_ID = '1o4j3QmI3cH1cMi_plMrk7Sp7yFY6oOIr'
 st.set_page_config(page_title="RTG Analysis", layout="wide")
 st.title('🩺Grad-CAM for lung X-ray scans')
 st.write("An app to support doctors in detecting pneumonia using deep learning.")
@@ -59,7 +59,7 @@ def generate_gradcam(model, input_batch, target_layer):
 @st.cache_resource
 def load_my_model():
     #file_id = '1o4j3QmI3cH1cMi_plMrk7Sp7yFY6oOIr'
-    url = f'https://drive.google.com/uc?export=download&id={file_id}'
+    url = f'https://drive.google.com/uc?export=download&id={FILE_ID}'
     #url = f'https://drive.google.com/uc?id={file_id}'
     output = 'pneumonia_vgg16.pth'
     
