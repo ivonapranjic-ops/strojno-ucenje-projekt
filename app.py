@@ -58,12 +58,13 @@ def generate_gradcam(model, input_batch, target_layer):
 #ucitavanje modela
 @st.cache_resource
 def load_my_model():
-    file_id = '1o4j3QmI3cH1cMi_plMrk7Sp7yFY6oOIr'
-    url = f'https://drive.google.com/uc?id={file_id}'
+    #file_id = '1o4j3QmI3cH1cMi_plMrk7Sp7yFY6oOIr'
+    url = f'https://drive.google.com/uc?export=download&id={file_id}'
+    #url = f'https://drive.google.com/uc?id={file_id}'
     output = 'pneumonia_vgg16.pth'
     
     if not os.path.exists(output):
-        gdown.download(url, output, quiet=False, fuzzy=True)
+        gdown.download(url, output, quiet=False)
     model = models.vgg16(weights=None)
     
     
